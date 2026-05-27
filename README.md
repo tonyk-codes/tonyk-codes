@@ -186,68 +186,20 @@ BB position < 0.2      → +1   |  BB position > 0.8    → -1
 Sharpe > 1.5           → +1   |  Sharpe < -0.5        → -1
 ```
 
-**Rule-Based Buy/Sell Framework (Formal Quant Notation)**
+**Rule-Based Buy/Sell Framework (Quant Spec, GitHub-Safe)**
 
-Let $P_t$ be price, $MA20_t$ and $MA50_t$ be moving averages, $RSI14_t$ be 14-day RSI, $r_{5d,t}^{QQQ}$ be 5-day QQQ return, $u_t$ be unrealized PnL, $P_t^{peak}$ be running peak price, and $H_t^{52w}$ be 52-week high.
+Notation: `P_t` price, `MA20_t` and `MA50_t` moving averages, `RSI14_t` RSI(14), `r_5d_t_QQQ` 5-day QQQ return, `u_t` unrealized PnL, `P_peak_t` running peak price, `H_52w_t` 52-week high, `Nneg_t` negative fundamental-news flag (1 if true, else 0).
 
-**Buy Signal — Trend Leader (TL)**
+| Signal | Formal Definition |
+|---|---|
+| BUY_TL(t) | `1{ P_t > MA50_t and MA20_t >= MA50_t and Delta(MA50_t) > 0 and 0.92*MA20_t <= P_t <= 1.02*MA20_t and 35 < RSI14_t < 65 and r_5d_t_QQQ > -0.05 }` |
+| BUY_N(t) | `1{ P_t > MA20_t and P_t > MA50_t and 0.93*MA20_t <= P_t <= 1.00*MA20_t and 40 <= RSI14_t <= 60 and r_5d_t_QQQ > 0 }` |
+| SELL_TL(t) | `1{ (u_t >= 0.25 and RSI14_t >= 75) or (P_t < 0.97*MA20_t) or (P_t < 0.82*P_peak_t) or (Nneg_t = 1) }` |
+| SELL_N(t) | `1{ (u_t >= 0.12 and RSI14_t > 65) or (P_t < MA50_t) or (P_t < 0.90*P_peak_t) }` |
+| TL(t) | `1{ (R_60d_t >= 0.40 or R_120d_t >= 0.80) and P_t >= 0.80*H_52w_t }` |
+| N(t) | `1 - TL(t)` |
 
-$$
-\mathrm{BUY}_{TL}(t)=\mathbf{1}\Big\{
-P_t>MA50_t
-\land MA20_t\ge MA50_t
-\land \Delta MA50_t>0
-\land 0.92\,MA20_t\le P_t\le 1.02\,MA20_t
-\land 35<RSI14_t<65
-\land r_{5d,t}^{QQQ}>-0.05
-\Big\}
-$$
-
-**Buy Signal — Normal (N)**
-
-$$
-\mathrm{BUY}_{N}(t)=\mathbf{1}\Big\{
-P_t>MA20_t
-\land P_t>MA50_t
-\land 0.93\,MA20_t\le P_t\le 1.00\,MA20_t
-\land 40\le RSI14_t\le 60
-\land r_{5d,t}^{QQQ}>0
-\Big\}
-$$
-
-**Sell Signal — Trend Leader (TL)**
-
-$$
-\mathrm{SELL}_{TL}(t)=\mathbf{1}\Big\{
-(u_t\ge 0.25 \land RSI14_t\ge 75)
-\lor (P_t<0.97\,MA20_t)
-\lor (P_t<0.82\,P_t^{peak})
-\lor (\mathcal{N}_t^{-}=1)
-\Big\}
-$$
-
-Partial take-profit policy for the first term above: reduce position by 25-33%.
-
-**Sell Signal — Normal (N)**
-
-$$
-\mathrm{SELL}_{N}(t)=\mathbf{1}\Big\{
-(u_t\ge 0.12 \land RSI14_t>65)
-\lor (P_t<MA50_t)
-\lor (P_t<0.90\,P_t^{peak})
-\Big\}
-$$
-
-**Symbol Classification**
-
-$$
-\mathrm{TL}(t)=\mathbf{1}\Big\{
-\big(R_{60d,t}\ge 0.40 \lor R_{120d,t}\ge 0.80\big)
-\land P_t\ge 0.80\,H_t^{52w}
-\Big\},
-\qquad
-\mathrm{N}(t)=1-\mathrm{TL}(t)
-$$
+Take-profit execution detail: for the first clause in `SELL_TL(t)`, reduce position by 25-33%.
 
 **Stack:** Python · NumPy · Pandas · yfinance · FinBERT (HuggingFace) · GitHub Actions · GitHub Pages · Vanilla JS
 
