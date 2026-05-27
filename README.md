@@ -186,6 +186,69 @@ BB position < 0.2      → +1   |  BB position > 0.8    → -1
 Sharpe > 1.5           → +1   |  Sharpe < -0.5        → -1
 ```
 
+**Rule-Based Buy/Sell Framework (Formal Quant Notation)**
+
+Let $P_t$ be price, $MA20_t$ and $MA50_t$ be moving averages, $RSI14_t$ be 14-day RSI, $r_{5d,t}^{QQQ}$ be 5-day QQQ return, $u_t$ be unrealized PnL, $P_t^{peak}$ be running peak price, and $H_t^{52w}$ be 52-week high.
+
+**Buy Signal — Trend Leader (TL)**
+
+$$
+\mathrm{BUY}_{TL}(t)=\mathbf{1}\Big\{
+P_t>MA50_t
+\land MA20_t\ge MA50_t
+\land \Delta MA50_t>0
+\land 0.92\,MA20_t\le P_t\le 1.02\,MA20_t
+\land 35<RSI14_t<65
+\land r_{5d,t}^{QQQ}>-0.05
+\Big\}
+$$
+
+**Buy Signal — Normal (N)**
+
+$$
+\mathrm{BUY}_{N}(t)=\mathbf{1}\Big\{
+P_t>MA20_t
+\land P_t>MA50_t
+\land 0.93\,MA20_t\le P_t\le 1.00\,MA20_t
+\land 40\le RSI14_t\le 60
+\land r_{5d,t}^{QQQ}>0
+\Big\}
+$$
+
+**Sell Signal — Trend Leader (TL)**
+
+$$
+\mathrm{SELL}_{TL}(t)=\mathbf{1}\Big\{
+(u_t\ge 0.25 \land RSI14_t\ge 75)
+\lor (P_t<0.97\,MA20_t)
+\lor (P_t<0.82\,P_t^{peak})
+\lor (\mathcal{N}_t^{-}=1)
+\Big\}
+$$
+
+Partial take-profit policy for the first term above: reduce position by 25-33%.
+
+**Sell Signal — Normal (N)**
+
+$$
+\mathrm{SELL}_{N}(t)=\mathbf{1}\Big\{
+(u_t\ge 0.12 \land RSI14_t>65)
+\lor (P_t<MA50_t)
+\lor (P_t<0.90\,P_t^{peak})
+\Big\}
+$$
+
+**Symbol Classification**
+
+$$
+\mathrm{TL}(t)=\mathbf{1}\Big\{
+\big(R_{60d,t}\ge 0.40 \lor R_{120d,t}\ge 0.80\big)
+\land P_t\ge 0.80\,H_t^{52w}
+\Big\},
+\qquad
+\mathrm{N}(t)=1-\mathrm{TL}(t)
+$$
+
 **Stack:** Python · NumPy · Pandas · yfinance · FinBERT (HuggingFace) · GitHub Actions · GitHub Pages · Vanilla JS
 
 ---
