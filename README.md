@@ -1,4 +1,4 @@
-# Tony K
+# Tony Kong
 
 ### Applied AI Engineering · Intelligent Systems · Creative Technology
 
