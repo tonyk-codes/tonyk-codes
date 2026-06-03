@@ -1,22 +1,35 @@
 # Tony Kong
 
-### Applied AI Engineering · Intelligent Systems · Creative Technology
+### Applied AI in Business Intelligence Systems and Creative Content Applications
 
-I design and build end-to-end AI-driven systems — from automated intelligence pipelines and financial signal platforms to generative media tools and mobile games. Every project on this page is independently designed and deployed, covering the full stack from data ingestion and model inference to production-ready user interfaces. This portfolio spans professional AI and machine learning applications today, with creative engineering work in music and game development in active development.
+As a supply chain trade compliance professional and a master's graduate in Information System Management from HKUST, I design and develop end-to-end AI-driven systems, from automated intelligence pipelines and trade signal trackers to generative media tools and mobile game development. The following projects showcase full-stack delivery, from data ingestion and model inference to production-ready user interfaces, with strong use of AI agent technology.
 
----
-
-## Projects
-
-### AI-Powered Intelligence Platforms
+**LinkedIn:** https://www.linkedin.com/in/tonykong-hk/
 
 ---
 
-#### AI News Dashboard — Supply Chain Intelligence (International Edition)
+## Projects Index
 
-**Repository:** [ai-news-dashboard-demo](https://github.com/tonyk-codes/ai-news-dashboard-demo)
 
-A fully automated supply-chain intelligence platform tracking global trade, customs, logistics, and export-control developments. The system ingests real articles from Google News RSS and a curated set of reputable regional outlets, classifies and translates them with GPT via OpenRouter, stores them in a monthly shard format, and publishes a daily risk-ranked briefing — entirely through GitHub Actions with no manual intervention.
+| # | Project | Focus Area | Link |
+|---|---|---|---|
+| 1 | Global Trade AI Intelligence Dashboard | Supply-chain intelligence automation | [Live](https://tonyk-codes.github.io/global-trade-ai-dashboard/) |
+| 2 | Hong Kong Trade AI Intelligence Dashboard | Regional trade intelligence (HK/Greater China) | [Repository](https://github.com/tonyk-codes/ai-news-dashboard) |
+| 3 | Huawei Executive Mindset AI | Executive coaching platform | [Repository](https://github.com/tonyk-codes/executive_mindset_ai) |
+| 4 | Personalized Marketing Video Agent and Workflow | Generative video ad automation | [Repository](https://github.com/tonyk-codes/AIPersonalizedMarketingAgent) |
+| 5 | Trade Signal Tracker | Financial ML signal platform | [Repository](https://github.com/tonyk-codes/MLStockTracker) |
+| 6 | VesselCheck | Maritime movement data app | [Repository](https://github.com/tonyk-codes/vesselcheck) |
+| 7 | ZenPath — A Mindful Puzzle Game | Mobile puzzle game development | [Repository](https://github.com/tonyk-codes/ZenPath) |
+
+## Project Descriptions
+
+### Project 1 — Global Trade AI Intelligence Dashboard
+
+**Repository is private; GitHub Pages for the final work product is available:** [Global Trade AI Intelligence Dashboard](https://tonyk-codes.github.io/global-trade-ai-dashboard/)
+
+A fully automated supply-chain intelligence platform tracking global trade across customs, logistics, and export-control developments. The system ingests articles using Google queries, global RSS news sources, and a curated set of reputable regional outlets; classifies and translates them with DeepSeek V4 Pro; and publishes a daily risk-ranked briefing to management through GitHub Actions with no manual intervention.
+
+The key advantage is the balance between cost and performance when using LLMs. Compared with earlier manually written internal reports and analysis, the system now uses optimized keyword pre-filtering and RAG-enhanced retrieval, while producing summaries and analysis that stay aligned with the company analysts' writing style and mindset.
 
 **Architecture**
 
@@ -27,10 +40,10 @@ Google News RSS + Curated Outlets
   scrape_candidates()         <- keyword pre-filter, dedup against known URLs
           |
           v
-  analyze_with_gpt()          <- OpenRouter (GPT) classify / translate / summarise
+        analyze_with_deepseek_v4_pro()    <- classify / translate / summarise with RAG-enhanced retrieval
           |
           v
-  normalize_article()         <- canonical article schema v3
+  normalize_article()         <- canonical article schema
           |
           v
   data/news/YYYY/MM.json      <- monthly shard storage
@@ -49,7 +62,7 @@ articles.json  risk-matrix.json  top20.json
 
 **Top-20 Scoring Algorithm**
 
-The daily briefing is not simply the most recent items. Each article is scored across four dimensions and ranked strictly by risk level first:
+The daily briefing is not simply a list of the most recent items. Each article is scored across four dimensions and ranked by risk level first, so management can focus on what matters most without being overwhelmed by volume.
 
 | Factor | Weight |
 |---|---|
@@ -58,7 +71,7 @@ The daily briefing is not simply the most recent items. Each article is scored a
 | Section weight | Hubs / Carriers / Customs = 40 · Business banner = 35 · Customs banner = 30 |
 | Risk-matrix cell boost | +15 if the article matches a cell rated High or above |
 
-Priority tiers are assigned at output: ranks 1–3 as critical, 4–10 as important, 11–20 as normal. The frontend consumes `top20.json` directly for the daily briefing tab.
+Priority tiers are assigned at output: ranks 1–3 as critical, 4–10 as important, and 11–20 as normal. The frontend consumes `top20.json` directly for the daily briefing tab and also generates a brief three-line summary.
 
 **Automation**
 
@@ -66,25 +79,25 @@ The GitHub Actions pipeline runs in a matrix of parallel regional jobs at 22:00 
 
 **Entity Coverage**
 
-The platform tracks structured entities across four dimensions: port and airport hubs, shipping carriers and airlines, customs agencies, and countries. Each entity has a curated profile card in `data/profiles.json` generated by `build_profiles.py`.
+The platform tracks structured entities across four dimensions: port and airport hubs, shipping carriers and airlines, customs agencies, and countries.
 
-**Stack:** Python · OpenRouter GPT · GitHub Actions (matrix workflow) · Vanilla JS · JSON shard storage
-
----
-
-#### AI News Dashboard — Hong Kong Edition
-
-**Repository:** [ai-news-dashboard](https://github.com/tonyk-codes/ai-news-dashboard)
-
-A regional variant of the supply-chain intelligence platform scoped to the Hong Kong and Greater China trade corridor. Shares the same automated pipeline architecture and article schema, but applies region-specific source curation, localised entity catalogues, and a section taxonomy aligned to Hong Kong regulatory and logistics structures. Includes a separate `docs/` directory for extended operational documentation.
-
-**Stack:** Python · OpenRouter GPT · GitHub Actions · Vanilla JS · JSON
+**Stack:** Python · DeepSeek V4 Pro · GitHub Actions · JSON updates · Dashboard updates · Vue 3 iFrame integration for internal site
 
 ---
 
-#### Executive Mindset AI
+### Project 2 — Hong Kong Trade AI Intelligence Dashboard
 
-**Repository:** [executive_mindset_ai](https://github.com/tonyk-codes/executive_mindset_ai)
+**Repository is private; GitHub Pages for the final work product is available:** [Hong Kong Trade AI Intelligence Dashboard](https://github.com/tonyk-codes/ai-news-dashboard)
+
+A regional variant of the supply-chain intelligence platform scoped to the Hong Kong and Greater China trade corridor. This is a streamlined version of the global intelligence dashboard that shares the same automated pipeline architecture and article schema, while applying region-specific source curation, localized entity catalogs, and a section taxonomy aligned to Hong Kong regulatory and logistics structures. It includes a separate `docs/` directory for extended operational documentation.
+
+**Stack:** Python · GitHub Models GPT-4o-mini · GitHub Actions · JSON updates · Dashboard updates · Vue 3 iFrame integration for internal site
+
+---
+
+### Project 3 — Huawei Executive Mindset AI
+
+**Repository (requires a Hugging Face Space runtime; H100 is recommended for startup):** [Huawei Executive Mindset AI](https://github.com/tonyk-codes/executive_mindset_ai)
 
 An interactive AI coaching platform built for Huawei executive training. Delivers structured mindset development sessions through a multi-tab Gradio interface. The system loads a LoRA fine-tuned causal language model with 4-bit quantization (BitsAndBytesConfig) for efficient GPU inference on Nvidia A100 hardware, and pairs text responses with high-quality speech synthesis from fal.ai. Deployed as a persistent Hugging Face Space.
 
@@ -99,11 +112,7 @@ An interactive AI coaching platform built for Huawei executive training. Deliver
 
 ---
 
-### Generative AI & Creative Automation
-
----
-
-#### AI Personalized Marketing Video Agent
+### Project 4 — Personalized Marketing Video Agent and Workflow
 
 **Repository:** [AIPersonalizedMarketingAgent](https://github.com/tonyk-codes/AIPersonalizedMarketingAgent)
 
@@ -145,11 +154,7 @@ The slogan model is constrained to a precise format: five words maximum before t
 
 ---
 
-### Financial Machine Learning
-
----
-
-#### Machine Learning Signal Platform
+### Project 5 — Trade Signal Tracker
 
 **Repository:** [MLStockTracker](https://github.com/tonyk-codes/MLStockTracker)  
 **Live:** [tonyk-codes.github.io/MLStockTracker](https://tonyk-codes.github.io/MLStockTracker)
@@ -205,11 +210,7 @@ Take-profit execution detail: for the first clause in `SELL_TL(t)`, reduce posit
 
 ---
 
-### Maritime & Logistics Data
-
----
-
-#### VesselCheck
+### Project 6 — Maritime & Logistics Data: VesselCheck
 
 **Repository:** [vesselcheck](https://github.com/tonyk-codes/vesselcheck)  
 **Live:** [tonyk-codes.github.io/vesselcheck](https://tonyk-codes.github.io/vesselcheck)
@@ -235,11 +236,7 @@ Results include summary statistics (total movements / arrival count / departure 
 
 ---
 
-### Mobile & Game Development
-
----
-
-#### ZenPath — A Mindful Puzzle Game
+### Project 7 — ZenPath: A Mindful Puzzle Game
 
 **Repository:** [ZenPath](https://github.com/tonyk-codes/ZenPath)
 
@@ -290,13 +287,3 @@ Monetisation uses Google AdMob for banner ads with a non-consumable in-app purch
 | Mobile | Flutter, Dart, Flame Engine, AdMob, StoreKit 2, Google Play Billing |
 | Open Data | HK Marine Department XML feeds, data.gov.hk Historical Archive API |
 | Data Storage | JSON shard storage (monthly partitioned), static JSON runtime indexes |
-
----
-
-## In Development
-
-Creative engineering projects including music production tooling and additional interactive game experiences are currently in active development and will be published to this profile as they reach a releasable state.
-
----
-
-*All projects are independently designed, engineered, and deployed. Repositories are updated on an ongoing basis.*
